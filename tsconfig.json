@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "esnext", // of course
+    "noEmit": true,
+    "allowImportingTsExtensions": true, // This is optional, but since I use this style, I need to turn it on.
+    "esModuleInterop": true, //This is required since some of the dependencies are CommonJS packages.
+    "moduleResolution": "bundler", // required
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "types": [
+      "node",
+      "core-dts/src/proposals/stage-2/new-set-methods.d.ts"
+    ]
+  },
+  "include": ["**/*.ts"]
+}
