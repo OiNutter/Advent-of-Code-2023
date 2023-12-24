@@ -3,7 +3,7 @@ import yargs from "yargs/yargs"
 import { range } from "./utils/utils"
 import { copyFile, writeFile } from "fs/promises"
 
-const days = [...range(0, 25)]
+const days = [...range(1, 26)]
 type Day = (typeof days)[number]
 
 interface DefaultAOCArgs {
@@ -20,7 +20,7 @@ const addDefaultParams = (yargs) => {
     describe: "Which day to run",
     type: "number",
     require: true,
-    choices: [...range(0, 25)],
+    choices: [...range(1, 26)],
   })
 }
 
