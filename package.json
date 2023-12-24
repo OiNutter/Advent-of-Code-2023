@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "ts-node --esm aoc.ts",
+    "start": "tsx aoc.ts",
     "start:bun": "bun aoc.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,8 +20,10 @@
     "heap-js": "^2.3.0",
     "javascript-astar": "^0.4.1",
     "ts-node": "^10.9.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.2.2",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "z3-solver": "^4.12.4"
   },
   "devDependencies": {
     "@types/yargs": "^17.0.28",

@@ -258,3 +258,57 @@ export function quadraticInterpolation(points: Coord[], n: number) {
 
   return a + b + c
 }
+
+export interface Velocity {
+  dx: number
+  dy: number
+}
+
+export interface ObjectMotion {
+  start: Coord
+  velocity: Velocity
+}
+
+export interface Area {
+  minX: number
+  minY: number
+  maxX: number
+  maxY: number
+}
+
+export function willPathsIntersect(
+  obj1: ObjectMotion,
+  obj2: ObjectMotion,
+  area: Area
+): boolean {
+  const point = findFutureIntersection(obj1, obj2)
+
+  if (!point)
+    return false
+
+  return point.x >= area.minX && point.x <= area.maxX && point.y >= area.minY && point.y <= area.maxY
+}
+
+export function findFutureIntersection(obj1: ObjectMotion, obj2: ObjectMotion): { x: number; y: number } | null {
+  const [slope1, intercept1] = getSlopeIntercept(obj1.start, obj1.velocity)
+  const [slope2, intercept2] = getSlopeIntercept(obj2.start, obj2.velocity)
+
+  if (slope1 === slope2)
+    return null
+
+  const x = (intercept2 - intercept1) / (slope1 - slope2)
+  const y = slope1 * x + intercept1
+  const t1 = (x - obj1.start.x) /  obj1.velocity.dx
+  const t2 = (x - obj2.start.x) / obj2.velocity.dx
+
+  if (t1 < 0 || t2 < 0)
+    return null
+
+  return {x,y};
+}
+
+export function getSlopeIntercept({x,y}: Coord, {dx,dy}: Velocity) {
+  const slope = dy/dx
+  const intercept = y - (slope * x)
+  return [slope, intercept]
+}
