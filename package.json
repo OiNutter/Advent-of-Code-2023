@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@graph-algorithm/minimum-cut": "^2.0.0",
     "astar": "^0.0.1",
     "astar-typescript": "^1.2.7",
     "core-js": "^3.33.3",
@@ -19,6 +20,7 @@
     "fastpriorityqueue": "^0.7.4",
     "heap-js": "^2.3.0",
     "javascript-astar": "^0.4.1",
+    "mathjs": "^12.2.1",
     "ts-node": "^10.9.1",
     "tsx": "^4.7.0",
     "typescript": "^5.2.2",

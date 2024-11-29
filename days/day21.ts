@@ -1,29 +1,45 @@
-import { Coord, divmod, measure, quadraticInterpolation, range } from "../utils/utils";
+import { Coord, cantorPair, divmod, measure, quadraticInterpolation, range, reverseCantorPair } from "../utils/utils";
 import { Day } from "../utils/day";
+import { complex, add } from "mathjs"
+import type { Complex } from "mathjs"
 
 const ROCK = "#"
 
+const deltas = [
+  complex(0,1),  //South
+  complex(0,-1), //North
+  complex(1,0), // East
+  complex(-1,0), // West
+]
+
 export class Solution extends Day {
   
-  map: Array<Array<string>> = []
-  start: Coord
+  map: Record<string, string>
+  start: Complex
   memo: Record<string, [number, Set<string>]> = {}
   xSize: number = 1
   ySize: number = 1
 
   @measure
   prepData(data: string[]): void {
-    this.map = data.map(line => line.trim().split(""))
-    this.xSize = this.map[0].length
-    this.ySize = this.map.length
-    for (let y = 0; y < this.ySize; y++) {
+    this.map = Object.fromEntries(data.flatMap((line, y) => {
+      return line.trim().split("").map((char, x) => {
+        if (char === "S")
+          this.start = this.getKey2({x,y})
+
+        return [this.getKey2({x,y}).toString(), char]
+      }
+    )}))
+    this.xSize = data[0].trim().length
+    this.ySize = data.length
+    /* for (let y = 0; y < this.ySize; y++) {
       for (let x= 0; x < this.xSize; x++) {
         if (this.map[y][x] === "S") {
           this.start = {x,y}
           return
         }
       }
-    }
+    } */
 
     
   }
@@ -54,21 +70,41 @@ export class Solution extends Day {
 
   }
 
+  getNeighbours2(current: Complex) {
+    let dx = [0,-1,0,1],
+        dy = [-1,0,1,0]
+        
+    const neighbours = []
+
+    for (let i = 0; i < 4; i++) {
+      let newCoord = add(current, deltas[i])
+
+      if (this.map[newCoord.toString()] !== ROCK)
+        neighbours.push(newCoord)
+    }
+    
+    return neighbours
+
+  }
+
   getKey(coord: Coord) {
-    return `${coord.x}|${coord.y}`
+    return [coord.x,coord.y].join("|")
+  }
+
+  getKey2(coord: Coord) {
+    return complex(coord.x, coord.y)
   }
 
   @measure
   pathfind(start, maxSteps) {    
-    let reached = new Set<string>([this.getKey(start)])
+    let reached = new Set<string>([start.toString()])
 
     for (let i = 0; i < maxSteps; i++) {
       const newReached = Array.from(reached).flatMap((r) => {
           
-          const [x,y] = r.split("|")
-          return this.getNeighbours({x: parseInt(x),y: parseInt(y)})
+          return this.getNeighbours2(complex(r))
         })
-        reached = new Set(newReached.map(r => this.getKey(r)))
+        reached = new Set(newReached.map(r => this.getKey2(r).toString()))
               
     }
 

@@ -6,8 +6,6 @@ const CUBE = "#"
 const SPACE = "."
 
 type Direction = "N" | "S" | "E" | "W"
-type Verticals = Exclude<Direction, "N" | "S">
-type Horizontals = Exclude<Direction, "W" | "E">
 
 export class Solution extends Day {
   
@@ -30,6 +28,7 @@ export class Solution extends Day {
     console.log("")
   }
 
+  @measure
   getKey() {
     return this.platform.flatMap(row => row.join("")).join("")
   }

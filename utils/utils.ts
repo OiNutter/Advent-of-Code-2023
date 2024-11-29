@@ -320,3 +320,48 @@ export const shuffle = (array: string[]) => {
   } 
   return array; 
 }; 
+
+export type GraphMap = Map<string, string[]>;
+
+export function createAdjacencyMatrix(graphMap: GraphMap): number[][] {
+    // Extract unique nodes from the map
+    const nodes = Array.from(new Set<string>([...graphMap.keys(), ...flattenArray([...graphMap.values()])]));
+
+    // Initialize an empty adjacency matrix with all entries set to 0
+    const adjacencyMatrix: number[][] = Array.from({ length: nodes.length }, () => Array(nodes.length).fill(0));
+
+    // Fill the adjacency matrix based on the connections in the map
+    for (const [node, connectedNodes] of graphMap.entries()) {
+        const nodeIndex = nodes.indexOf(node);
+
+        for (const connectedNode of connectedNodes) {
+            const connectedNodeIndex = nodes.indexOf(connectedNode);
+            adjacencyMatrix[nodeIndex][connectedNodeIndex] = 1;
+            adjacencyMatrix[connectedNodeIndex][nodeIndex] = 1; // Assuming undirected graph
+        }
+    }
+
+    return adjacencyMatrix;
+}
+
+// Helper function to flatten an array of arrays
+function flattenArray<T>(arrays: T[][]): T[] {
+    return [].concat(...arrays);
+}
+
+export function cantorPair(x: number, y: number) 
+{
+    var z = ((x + y) * (x + y + 1)) / 2 + y;
+    return z;
+}
+
+export function reverseCantorPair(z: number)
+{
+    var pair = [];
+    var t = Math.floor((-1 + Math.sqrt(1 + 8 * z))/2);
+    var x = t * (t + 3) / 2 - z;
+    var y = z - t * (t + 1) / 2;
+    pair[0] = x;
+    pair[1] = y;
+    return pair;
+}

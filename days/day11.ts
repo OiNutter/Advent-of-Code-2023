@@ -53,28 +53,6 @@ export class Solution extends Day {
     }
   }
 
-  getNeighbours(current: Coord, steps: number): Array<[Coord, number]> {
-    const minX = Math.max(current.x - 1, 0),
-      maxX = Math.min(current.x + 1, (this.map[0] ?? []).length - 1),
-      minY = Math.max(current.y - 1, 0),
-      maxY = Math.min(current.y + 1, this.map.length - 1);
-
-    const neighbours: Array<[Coord, number]> = [];
-    if (minY !== current.y)
-      neighbours.push([{ x: current.x, y: minY }, steps + 1]);
-
-    if (maxY !== current.y)
-      neighbours.push([{ x: current.x, y: maxY }, steps + 1]);
-
-    if (maxX !== current.x)
-      neighbours.push([{ x: maxX, y: current.y }, steps + 1]);
-
-    if (minX !== current.x)
-      neighbours.push([{ x: minX, y: current.y }, steps + 1]);
-
-    return neighbours;
-  }
-
   getDistances(expansion: number) {
     expansion--;
     const distances: Record<string, number> = {};
